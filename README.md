@@ -45,9 +45,9 @@ void wave_generate() {                    // generate wave
     int k = 0;
     float gap1, gap2;
     int g = 1 - (2.0f / 3.0f) *frequency[f];
-    gap1 = (1.0f  / (sample * 0.333f * frequency[f])) *4.166f;
-    gap2 = (1.0f / (sample * 0.333f * frequency[f]))*4.166f;
-    for (float j = 0; j <= 1; j = j + gap1) {
+    gap1 = (1.0f  / (sample * 0.333f * frequency[f])) *4.166f;  
+    gap2 = (1.0f / (sample * 0.333f * frequency[f]))*4.166f;    
+    for (float j = 0; j <= 1; j = j + gap1) {             // wave for slope up
             Aout = j;
             //if (k < sample) {
                 ADCdata[k] = Aout;
@@ -55,7 +55,7 @@ void wave_generate() {                    // generate wave
             //}
             ThisThread::sleep_for(1000ms / sample);
         }
-    //for (float w = 0; w <= (sample - sample * (2.0f / 3) * frequency[f]); w+=1) {
+    //for (float w = 0; w <= (sample - sample * (2.0f / 3) * frequency[f]); w+=1) { 
             Aout = 1;
             while (k < (sample *  (test[f] / 240.0f))){
                 ADCdata[k] = 1;
@@ -63,7 +63,7 @@ void wave_generate() {                    // generate wave
             }
             ThisThread::sleep_for(wait[f] * 1ms);
         //}
-    for (float j = 1; j >= 0; j = j - gap2) {
+    for (float j = 1; j >= 0; j = j - gap2) {    // wave for slope down
             Aout = j;
             //if (k < sample) {
                 ADCdata[k] = Aout;
@@ -76,15 +76,15 @@ void wave_generate() {                    // generate wave
 }
 int main()                                  // main function
 {
-    swup.rise(&ISR1);
+    swup.rise(&ISR1);                       // interrupt for button
     swdown.rise(&ISR2);
-    t.start(callback(&queue, &EventQueue::dispatch_forever));
+    t.start(callback(&queue, &EventQueue::dispatch_forever));   // eventqueue for generate wave
     swselect.rise(queue.event(wave_generate));
     uLCD.reset();
     uLCD.cls();
     uLCD.color(GREEN);
     uLCD.printf("* %f\n", frequency[0]);
-   while(1) {
+   while(1) {                                        // show current frequency
        uLCD.printf("%f", frequency[f]);
        uLCD.cls();
    }
