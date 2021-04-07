@@ -47,15 +47,15 @@ void wave_generate() {
     gap2 = (1.0f / (sample * 0.333f * frequency[f]))*4.166f;
     for (float j = 0; j <= 1; j = j + gap1) {
             Aout = j;
-            if (k < sample) {
-                ADCdata[k] = Ain;
+            //if (k < sample) {
+                ADCdata[k] = Aout;
                 k++;
-            }
+            //}
             ThisThread::sleep_for(1000ms / sample);
         }
     //for (float w = 0; w <= (sample - sample * (2.0f / 3) * frequency[f]); w+=1) {
             Aout = 1;
-            while (k < (sample *  (test[f] / 240))){
+            while (k < (sample *  (test[f] / 240.0f))){
                 ADCdata[k] = 1;
                 k++;
             }
@@ -63,12 +63,13 @@ void wave_generate() {
         //}
     for (float j = 1; j >= 0; j = j - gap2) {
             Aout = j;
-            if (k < sample) {
-                ADCdata[k] = Ain;
+            //if (k < sample) {
+                ADCdata[k] = Aout;
                 k++;
-            }
+            //}
             ThisThread::sleep_for(1000ms / sample);
         }
+        //printf("%d", k);
     queue.call(print_data);
 }
 int main()
