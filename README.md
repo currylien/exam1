@@ -22,26 +22,26 @@ Thread t;
 int sample = 128;
 float ADCdata[256];
 
-void print_data() {
+void print_data() {                         // printdata
     for (int i = 0; i < 128; i++){
         printf("%f\r\n", ADCdata[i]);
         ThisThread::sleep_for(10ms);
     }  
 }
 
-void ISR1()
+void ISR1()                                // up button
 {
     if (f <= 2) {
             f++;
     }
 }
 
-void ISR2() {
+void ISR2() {                             // down button
     if (f >= 1) {
             f--;
     }
 }
-void wave_generate() {
+void wave_generate() {                    // generate wave
     int k = 0;
     float gap1, gap2;
     int g = 1 - (2.0f / 3.0f) *frequency[f];
@@ -74,7 +74,7 @@ void wave_generate() {
         //printf("%d", k);
     queue.call(print_data);
 }
-int main()
+int main()                                  // main function
 {
     swup.rise(&ISR1);
     swdown.rise(&ISR2);
